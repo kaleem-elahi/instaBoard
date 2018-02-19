@@ -1,0 +1,5 @@
+export const ACCESS_TOKEN = 'ACCESS_TOKEN';
+export const SET_USER_SELF = 'SET_USER_SELF';
+export const SET_USER_RECENT_MEDIA = 'SET_USER_RECENT_MEDIA';
+export const SET_USERS_SEARCH = 'SET_USERS_SEARCH';
+
