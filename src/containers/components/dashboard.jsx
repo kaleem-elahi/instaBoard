@@ -11,31 +11,24 @@ import HeaderBar from './header.jsx';
 import { Grid, Image } from 'semantic-ui-react'
 import { Sparklines,SparklinesLine ,SparklinesBars} from 'react-sparklines';
 import {    
-  ResponsiveContainer, BarChart, Bar,LineChart, Line, Legend, Tooltip, YAxis, CartesianAxis, CartesianGrid, XAxis } from 'recharts';
+  ResponsiveContainer, BarChart, Bar,LineChart, Line, Legend, Tooltip, YAxis, CartesianAxis, CartesianGrid, XAxis 
+} from 'recharts';
 
 
 class Dashboard extends Component {
 
   constructor(props) {
     super(props);
-
     this.state = {
       userData: [],
     }
   }
 
   componentWillMount() {
-
-    let AT_LS = localStorage.getItem("accessToken");
-    let redirect_uri = 'http://localhost:3000/';
-    const url = 'https://api.instagram.com/oauth/access_token';
-
-
-
-    if (AT_LS) {
-      this.GetUserDetails(AT_LS);
-      this.GetUserRecentMedia(AT_LS)
-
+    let accessTokenFromLocalStorage = localStorage.getItem("accessToken");
+    if (accessTokenFromLocalStorage) {
+      this.GetUserDetails(accessTokenFromLocalStorage);
+      this.GetUserRecentMedia(accessTokenFromLocalStorage)
     }
   }
 
@@ -49,11 +42,9 @@ class Dashboard extends Component {
         console.log('Looks like there was a problem. Status Code: ' + response.status);
         return;
       }
-      // Examine the text in the response
       response
         .json()
         .then((data) => {
-          // console.log(data);
           this.props.setUserRecentMediaAction(data);
           return data;
         });
@@ -87,23 +78,23 @@ class Dashboard extends Component {
 
   Card = (total,cardClass,cardType) => {
   let datauserRecentMedia = this.props.userRecentMedia.data || []; 
-const likesOfMedia =   datauserRecentMedia.map((obj)=> {
-  return obj.likes['count'] 
-})
+  const LIKES_OF_MEDIA =   datauserRecentMedia.map((obj)=> (obj.likes['count']))
 
   const likes= "";
 
     return(
         <div className="card ">
-          <div className={cardClass} />
+         
+          <div className={cardClass}> <br/> <br/> <br/> <br/> <br/> <br/> 
+          {  cardType=='Likes' ||  cardType=='Posts' ? 
+           <Sparklines data={LIKES_OF_MEDIA.reverse()}  height={30} >
+              <SparklinesLine style={{ fill: "violet" }} />
+            </Sparklines> : ""
+          } 
+          </div>  
           <div className="card-title-mini">{cardType}</div>          
           <div className="card-title">{total}</div>
-          
-          {likes ? <Sparklines data={likesOfMedia.reverse()}>
-  <SparklinesBars style={{ fill: "#41c3f9" }} />
-</Sparklines> : ""
-
-}
+   
         </div>
     );
   }
@@ -132,7 +123,7 @@ const likesOfMedia =   datauserRecentMedia.map((obj)=> {
     return myDate.getDate()+"/"+month[myDate.getMonth()];
   }
 
-  const likesOfMedia = datauserRecentMedia.map((obj)=> {
+  const LIKES_OF_MEDIA = datauserRecentMedia.map((obj)=> {
   const d = new Date(obj.created_time); // The 0 there is the key, which sets the date to the epoch
   return {
   name :  EpochToDate(obj.created_time),
@@ -159,7 +150,7 @@ const likesOfMedia =   datauserRecentMedia.map((obj)=> {
           <div className="charts-container">
           <div style={{ width: '100%', height: 300 }}>
           <ResponsiveContainer width="100%">
-          <LineChart  data={cardType == 'Likes' ? likesOfMedia.reverse() : commentsOfMedia.reverse() } margin={{top: 5,right: 50,  bottom: 0}}>
+          <LineChart  data={cardType == 'Likes' ? LIKES_OF_MEDIA.reverse() : commentsOfMedia.reverse() } margin={{top: 5,right: 50,  bottom: 0}}>
             <XAxis dataKey="name" tick={{fontSize: 15}}/>
             <YAxis tick={{fontSize: 15}}/>
             <CartesianGrid strokeDasharray="3 3"/>
@@ -196,7 +187,7 @@ const likesOfMedia =   datauserRecentMedia.map((obj)=> {
     const TOTAL = data.data ? data.data.counts : [];
     const datauserRecentMedia = this.props.userRecentMedia.data || []; 
 
-        const likesOfMedia = datauserRecentMedia.map((obj)=> {
+        const LIKES_OF_MEDIA = datauserRecentMedia.map((obj)=> {
          return obj.likes['count'];
         }).reduce( function(total, amount){
           return total + amount
@@ -212,7 +203,7 @@ const likesOfMedia =   datauserRecentMedia.map((obj)=> {
         {this.Card(TOTAL.media,"posts","Posts")}
         </Grid.Column>
         <Grid.Column>
-        {this.Card(likesOfMedia,"likes","Likes")}
+        {this.Card(LIKES_OF_MEDIA,"likes","Likes")}
         </Grid.Column>
         <Grid.Column>
         {this.Card(TOTAL.follows,"following","Followings")}
@@ -229,10 +220,6 @@ const likesOfMedia =   datauserRecentMedia.map((obj)=> {
 
     let data = this.state.userData.data || [];
     let datauserRecentMedia = this.props.userRecentMedia.data || []; 
-  
-  const likesOfMedia =   datauserRecentMedia.map((obj)=> {
-    return obj.likes['count'] 
-  })
   
     return (
       <div>

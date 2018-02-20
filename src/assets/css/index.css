@@ -163,6 +163,12 @@ a.header.item {
   height: 490px;
 }
 
+.linear-caption {
+  font-weight: 100;
+  color: #808080;
+  font-size: 15px;
+  margin-top: -155.4px;
+}
 
 /* Animated Backgrround  */
 
