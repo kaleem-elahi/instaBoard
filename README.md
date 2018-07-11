@@ -1,13 +1,13 @@
 # InstaBoard - Instagram Dashboard
 
-## Getting Started:
+## Getting Started: using `cmd`
 
-step 1: `git clone https://github.com/kaleem-elahi/food-truck-finder-React`
+Step 1: `git clone https://github.com/kaleem-elahi/instaBoard`
 
-step 2: `cd food-truck-finder-React`
+Step 2: `cd instaBoard`
 
-step 3: `npm install`
+Step 3: `npm install`
 
-step 4: `npm start`
+Step 4: `npm start`
 
 ####  DONE 👏
